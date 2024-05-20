@@ -10,15 +10,17 @@
     size_t capacity;                                                           \
   } name;
 
+#define UTILS_DA_CREATE_FIELDS(dtype)                                          \
+  dtype *items;                                                                \
+  size_t count;                                                                \
+  size_t capacity;
+
 // TODO: Test that
-#define FOREACH_ARRAY(type, elem, array, body)  \
-    for (size_t elem_##index = 0;                           \
-         elem_##index < array.count;                        \
-         ++elem_##index)                                    \
-    {                                                       \
-        type *elem = &array.elems[elem_##index];            \
-        body;                                               \
-    }
+#define FOREACH_ARRAY(type, elem, array, body)                                 \
+  for (size_t elem_##index = 0; elem_##index < array.count; ++elem_##index) {  \
+    type *elem = &array.elems[elem_##index];                                   \
+    body;                                                                      \
+  }
 
 #define utils_da_append(xs, x)                                                 \
   do {                                                                         \
