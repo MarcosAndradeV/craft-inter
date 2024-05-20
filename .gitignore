@@ -1,3 +1,5 @@
 nobuild
 *.old
+*.o
 build/
+bin/
