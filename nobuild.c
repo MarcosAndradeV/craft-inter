@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
   //});
 
   //CMD("cc", CFLAGS, "-o", "build/crafti", "bin/main.o", "bin/chunk.o", "bin/debug.o", "bin/vm.o");
-  CMD("cc", CFLAGS, "-o", "build/crafti", "src/main.c", "src/debug.c", "src/vm.c", "src/compiler.c", "-Iinclude");
+  CMD("cc",  "-o", "build/crafti", "src/main.c", "src/debug.c", "src/vm.c", "src/compiler.c", "-Iinclude");
   //CMD("./build/crafti");
 
   return 0;

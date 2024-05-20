@@ -65,7 +65,7 @@ static bool isAtEnd() {
     return *lex.current == '\0';
 }
 
-static char advance() {
+static char advance_lex() {
     lex.current++;
     return lex.current[-1];
 }
@@ -111,16 +111,16 @@ static void skipWhitespace() {
             case ' ':
             case '\r':
             case '\t':
-                advance();
+                advance_lex();
                 break;
             case '\n':
                 lex.line++;
-                advance();
+                advance_lex();
                 break;
             case '/':
             if (peekNext() == '/') {
                 // A comment goes until the end of the line.
-                while (peek() != '\n' && !isAtEnd()) advance();
+                while (peek() != '\n' && !isAtEnd()) advance_lex();
             } else {
                 return;
             }
@@ -134,18 +134,18 @@ static void skipWhitespace() {
 static Token string() {
     while (peek() != '"' && !isAtEnd()) {
         if (peek() == '\n') lex.line++;
-        advance();
+        advance_lex();
     }
     if (isAtEnd()) return errorToken("Unterminated string.");
-    advance();
+    advance_lex();
     return makeToken(TOKEN_STRING);
 }
 
 static Token number() {
-    while (isDigit(peek())) advance();
+    while (isDigit(peek())) advance_lex();
         if (peek() == '.' && isDigit(peekNext())) {
-            advance();
-            while (isDigit(peek())) advance();
+            advance_lex();
+            while (isDigit(peek())) advance_lex();
         }
         return makeToken(TOKEN_NUMBER);
 }
@@ -196,7 +196,7 @@ static TokenKind identifierType() {
 }
 
 static Token identifier() {
-    while (isAlpha(peek()) || isDigit(peek())) advance();
+    while (isAlpha(peek()) || isDigit(peek())) advance_lex();
     return makeToken(identifierType());
 }
 
@@ -204,7 +204,7 @@ Token scanToken(void) {
     skipWhitespace();
     lex.start = lex.current;
     if (isAtEnd()) return makeToken(TOKEN_EOF);
-    char c = advance();
+    char c = advance_lex();
     if (isAlpha(c)) return identifier();
     if (isDigit(c)) return number();
     switch (c) {
